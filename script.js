@@ -5,9 +5,22 @@
  var todayWeather = document.querySelector('#today');
  var forecastWeather = document.querySelector('#forecast');
 
- function Currlocation(city){
+ 
 
- var URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+ searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+ 
+ })
 
- console.log(city)
- }
+ function currlocation(city){
+
+    var URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+   
+    console.log(city)
+    }
+
+function displayWeather(currlocation) {
+
+
+}
