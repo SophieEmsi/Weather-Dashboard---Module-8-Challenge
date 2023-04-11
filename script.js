@@ -1,4 +1,6 @@
  var apiKey = 'e453b657439ab759f676b00e45336611';
+ var date = moment().format();
+
 
  var searchForm = document.querySelector('#search-form');
  var searchInput = document.querySelector('#search-input');
@@ -26,8 +28,12 @@
 }
 
 function displayWeather(weatherData) { // new function with the parameter of weatherData with the purpose of updating the html elements with data from the api
-    todayWeather.innerHTML = 'Current temperature: ' + weatherData.main.temp; // 
-    todayWeather.innerHTML = 'Wind Speed: ' + weatherData.wind.speed;
-    todayWeather.innerHTML = 'Humidity: ' + weatherData.main.humidity;
+    var Celsius = weatherData.main.temp - 273.15; // convert the temp from kelvin to celsius by subtracting 273.15 from the main temp
+    todayWeather.innerHTML = 'Current temperature: ' + Celsius.toFixed(1) + ' °C' +'<br>' + // use new variable celcius to display current temp to one decimal place
+                                'Wind Speed: ' + weatherData.wind.speed + 'kph' + '<br>' +
+                                'Humidity: ' + weatherData.main.humidity + '%'; // 
+  
 
 }
+
+// currently the only part displaying on my page is the humidity so I need to edit this function // fixed by altering the layout of todayWeather.innerHTML
