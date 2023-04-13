@@ -55,16 +55,21 @@ function displayWeather(weatherData) { // new function with the parameter of wea
         return response.json(); // turns the response into an object from a string via json
       })
       .then(function(data) { // data from the called api is then passed through a .then method 
-      
-     
-  
-        
-        for (var i = 0; i < data.list.length; i++) { // Loop through the list of forecast data 
-          var forecastData = data.list[i];
+        // the forecast is showing every 3 hours rather than one a day so I selected 12pm for the forecast time 
+        var forecasts = [];  // creates an empty array
+        for (let i = 0; i < data.list.length; i++) { //  loops through each item in data.list
+          var forecast = data.list[i]; // takes the forecast data and assings it to new variable called forecast
+          var time = forecast.dt_txt.split(' ')[1]; // extracts the time from the forecast data by splitting the dt (date.time) and txt property
+          if (time === '12:00:00') { // if time is 12pm in the open weather map api then push the forecast
+            forecasts.push(forecast);
+          }
+        }
   
           
           var forecastItem = document.createElement('div'); // Create a new div element and assigning it to forecastItem 
     
+          for (var i = 0; i < forecasts.length; i++) {// Loop through the list of forecasts 
+            var forecastData = forecasts[i];
   
           // Create new HTML elements to display the date and time of the forecast
           var forecastDate = document.createElement('div');// Create a new div element for the date and assigning it to forecasDate 
@@ -75,7 +80,8 @@ function displayWeather(weatherData) { // new function with the parameter of wea
   
           // Create a new HTML element to display the forecast temperature
           var forecastTemp = document.createElement('div');// Create a new div element for the temp and assigning it to forecastTemp
-          forecastTemp.innerHTML = `${Math.round(forecastData.main.temp)}&deg;C`; // creates a string literal that includes the forecast from the api. math.round rounds the temp to the nearest whole number and the celcius symbol added to the end.
+          var Celsius = forecastData.main.temp - 273.15;
+          forecastTemp.innerHTML = Celsius.toFixed(1) + ' °C';
   
           // Create a new HTML element to display the forecast weather icon
           var forecastIcon = document.createElement('img');// Create a new div element for the weather icons and assigning it to forecastIcon
@@ -90,8 +96,9 @@ function displayWeather(weatherData) { // new function with the parameter of wea
           forecastItem.appendChild(forecastTemp);
           forecastItem.appendChild(forecastIcon);
   
-          // Add the forecastItem element to the forecastWeather element
-          forecastWeather.appendChild(forecastItem);
+          
+        //   forecastWeather.innerHTML = '';
+          forecastWeather.appendChild(forecastItem);// add the forecastItem element to the forecastWeather element
         }
       });
   }
