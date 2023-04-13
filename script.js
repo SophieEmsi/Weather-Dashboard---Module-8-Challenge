@@ -80,8 +80,8 @@ function displayWeather(weatherData) { // new function with the parameter of wea
   
           // Create a new HTML element to display the forecast temperature
           var forecastTemp = document.createElement('div');// Create a new div element for the temp and assigning it to forecastTemp
-          var Celsius = forecastData.main.temp - 273.15;
-          forecastTemp.innerHTML = Celsius.toFixed(1) + ' °C';
+        //   console.log("Temperature: " + forecastData.main.temp); // i was trying to convert the temp from kelvin to celsius but it appears to already be in c
+          forecastTemp.innerHTML = forecastData.main.temp.toFixed(1) + ' °C';
   
           // Create a new HTML element to display the forecast weather icon
           var forecastIcon = document.createElement('img');// Create a new div element for the weather icons and assigning it to forecastIcon
