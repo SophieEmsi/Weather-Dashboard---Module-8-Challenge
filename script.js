@@ -5,7 +5,7 @@
  var searchForm = document.querySelector('#search-form');
  var searchInput = document.querySelector('#search-input');
  var todayWeather = document.querySelector('#today');
- var forecastWeather = document.querySelector('#forecast');
+ var forecastWeather = document.querySelector('#forecast-weather');
 
  
 
@@ -45,8 +45,57 @@ function displayWeather(weatherData) { // new function with the parameter of wea
     document.getElementById("weather-humidity").innerHTML = "Humidity: " + weatherData.main.humidity + " %";// new html element called weather-humidity which gets its information from weatherData that is called via currLocation
   }
   
-
-
-
-
 // currently the only part displaying on my page is the humidity so I need to edit this function // fixed by altering the layout of todayWeather.innerHTML
+
+  function getForecast(cityName) { // new function which will be used to hold the forecast data
+    var forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`;
+  
+    fetch(forecastUrl) // making a request to fetch the data from the url provided in forecastUrl
+      .then(function(response) {
+        return response.json(); // turns the response into an object from a string via json
+      })
+      .then(function(data) { // data from the called api is then passed through a .then method 
+      
+     
+  
+        
+        for (var i = 0; i < data.list.length; i++) { // Loop through the list of forecast data 
+          var forecastData = data.list[i];
+  
+          
+          var forecastItem = document.createElement('div'); // Create a new div element and assigning it to forecastItem 
+    
+  
+          // Create new HTML elements to display the date and time of the forecast
+          var forecastDate = document.createElement('div');// Create a new div element for the date and assigning it to forecasDate 
+          forecastDate.innerHTML = moment.unix(forecastData.dt).format('ddd, MMM D'); // now a new div has been created this line fills it with information by converting the unix timestamp to a js date object in the given format.
+  
+          var forecastTime = document.createElement('div');// Create a new div element for the time and assigning it to forecastTime
+          forecastTime.innerHTML = moment.unix(forecastData.dt).format('h:mm A'); // the same code as above is used but the format is for a time rather than date
+  
+          // Create a new HTML element to display the forecast temperature
+          var forecastTemp = document.createElement('div');// Create a new div element for the temp and assigning it to forecastTemp
+          forecastTemp.innerHTML = `${Math.round(forecastData.main.temp)}&deg;C`; // creates a string literal that includes the forecast from the api. math.round rounds the temp to the nearest whole number and the celcius symbol added to the end.
+  
+          // Create a new HTML element to display the forecast weather icon
+          var forecastIcon = document.createElement('img');// Create a new div element for the weather icons and assigning it to forecastIcon
+          
+          //openweathermap.org/img/wn/10d@2x.png // url from openweathermap.org
+          forecastIcon.src = `http://openweathermap.org/img/wn/${forecastData.weather[0].icon}.png`; // set the src img element for id element called forecastIcon created above. 
+          //retrieving the icon property from the first element in the weather array, which is inside the forecastData object
+  
+          // appending these elements as the children of forecastItem which is the parent.
+          forecastItem.appendChild(forecastDate);
+          forecastItem.appendChild(forecastTime);
+          forecastItem.appendChild(forecastTemp);
+          forecastItem.appendChild(forecastIcon);
+  
+          // Add the forecastItem element to the forecastWeather element
+          forecastWeather.appendChild(forecastItem);
+        }
+      });
+  }
+  
+  
+
+
