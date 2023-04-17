@@ -64,17 +64,21 @@ function displayWeather(weatherData) { // new function with the parameter of wea
             forecasts.push(forecast);
           }
         }
-  
-          
-          var forecastItem = document.createElement('div'); // Create a new div element and assigning it to forecastItem 
+        var forecastContainer = document.createElement('div'); // Create a new div element to hold the forecast items
+        forecastContainer.style.display = "flex"; // sets the display property of the container to flex
+        forecastContainer.style.flexDirection = "row"; // sets the flex direction to row so that the child elements are displayed horizontally
+        forecastContainer.style.overflowX = "auto"; // adds horizontal scrolling to the container in case the child elements exceed the width of the container
+        
     
           for (var i = 0; i < forecasts.length; i++) {// Loop through the list of forecasts 
             var forecastData = forecasts[i];
   
+        var forecastItem = document.createElement('div'); // Create a new div element and assigning it to forecastItem 
           // Create new HTML elements to display the date and time of the forecast
           var forecastDate = document.createElement('div');// Create a new div element for the date and assigning it to forecasDate 
           forecastDate.innerHTML = moment.unix(forecastData.dt).format('ddd, MMM D'); // now a new div has been created this line fills it with information by converting the unix timestamp to a js date object in the given format.
-  
+          
+
           var forecastTime = document.createElement('div');// Create a new div element for the time and assigning it to forecastTime
           forecastTime.innerHTML = moment.unix(forecastData.dt).format('h:mm A'); // the same code as above is used but the format is for a time rather than date
   
@@ -96,13 +100,14 @@ function displayWeather(weatherData) { // new function with the parameter of wea
           forecastItem.appendChild(forecastTemp);
           forecastItem.appendChild(forecastIcon);
   
+        forecastContainer.appendChild(forecastItem); // Add the forecast item to the forecast container
           
         //   forecastWeather.innerHTML = '';
-          forecastWeather.appendChild(forecastItem);// add the forecastItem element to the forecastWeather element
+          forecastWeather.appendChild(forecastContainer);// add the forecastItem element to the forecastWeather element
         }
       });
   }
   
-  
+  // forecast is currently displaying vertically not horizontally and I think this is to do with the new html elements created for each weather element.
 
 
