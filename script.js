@@ -6,8 +6,12 @@
  var searchInput = document.querySelector('#search-input');
  var todayWeather = document.querySelector('#today');
  var forecastWeather = document.querySelector('#forecast-weather');
+ var searchHistory = [];
 
- 
+ var storedSearchHistory = JSON.parse(localStorage.getItem('searchHistory')); // new variable to retreive the search item from the local storage and turn it to an object.
+if (storedSearchHistory !== null) { // if the local storage is not null then it assigns any data to searchHistory
+  searchHistory = storedSearchHistory; // if user has been on page before it will retreive the search history
+}
 
  searchForm.addEventListener('submit', function(event) { // adding event listener for when the submit button is clicked from html
     event.preventDefault(); // page was flashing and refreshing so this stops it
@@ -16,7 +20,12 @@
         .then(function(weatherData) { // if currlocation is fulfilled the function takes the data and passes it to a new function called display weatherData
         displayWeather(weatherData); // this will display the weather on the page
         getForecast(weatherData.name); // this will display the forecast
-        })
+        searchHistory.push(searchText); // add the search text to the searchHistory array
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory)); // save the searchHistory array to local storage as a string
+        showSearchHistory(); // update the search history list on the page
+    
+    
+    })
  })
 
  function currlocation(searchText){ // this function is to get the weather before displaying it
@@ -43,8 +52,23 @@ function displayWeather(weatherData) { // new function with the parameter of wea
     document.getElementById("weather-temperature").innerHTML = "Temperature: " + Celsius.toFixed(1) + " °C";// new html element added for the weather-temperature and calculated celcius to display current temp to one decimal place
     document.getElementById("weather-wind").innerHTML = "Wind Speed: " + weatherData.wind.speed + " kph"; // new html element called weather-wind which gets its informaiton from weatherData that is called via currLocation
     document.getElementById("weather-humidity").innerHTML = "Humidity: " + weatherData.main.humidity + " %";// new html element called weather-humidity which gets its information from weatherData that is called via currLocation
+  
+    
+}
+
+function showSearchHistory() {
+    var searchHistoryList = document.getElementById('search-history'); // i added a html id element called search-history
+    searchHistoryList.innerHTML = ''; // clears the search history list by setting the innerhtml to empty string
+    for (var i = 0; i < searchHistory.length; i++) { // for loop to create a new list item from searchHistory
+      var li = document.createElement('li'); // creates new list 
+      li.textContent = searchHistory[i]; // assigns the search history text to textContent
+      searchHistoryList.appendChild(li); // add the search history item to the list using appendchild
+    }
   }
   
+  // call the showSearchHistory function to display the search history list on page load
+  showSearchHistory();
+
 // currently the only part displaying on my page is the humidity so I need to edit this function // fixed by altering the layout of todayWeather.innerHTML
 
   function getForecast(cityName) { // new function which will be used to hold the forecast data
