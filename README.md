@@ -8,3 +8,8 @@ This dashboard will display the current city name, the date, an icon representat
 
 
 ![screenshot](Screenshot%202023-04-18%20at%2015.24.04.png)
+
+https://sophieemsi.github.io/Weather-Dashboard---Module-8-Challenge/
+
+https://github.com/SophieEmsi/Weather-Dashboard---Module-8-Challenge
+
